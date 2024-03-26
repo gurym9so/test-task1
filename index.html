@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Попап форма</title>
+    <style>
+        /* Стили для кнопки "Начать" */
+        .start-button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Стили для попапа */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        /* Стили для полупрозрачного фона */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Стили для полей ввода */
+        .input-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .input-container input {
+            margin-bottom: 10px;
+        }
+
+        /* Стили для кнопки "Отправить" */
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопка "Начать" -->
+    <button class="start-button">Начать</button>
+
+    <!-- Попап -->
+    <div class="popup">
+        <h2>Форма</h2>
+        <div class="input-container">
+            <input type="text" placeholder="Поле 1">
+            <input type="text" placeholder="Поле 2">
+            <input type="text" placeholder="Поле 3">
+            <input type="text" placeholder="Поле 4">
+            <input type="text" placeholder="Поле 5">
+        </div>
+        <button class="submit-button">Отправить</button>
+    </div>
+
+    <!-- Полупрозрачный фон -->
+    <div class="overlay"></div>
+
+    <script>
+        // Получение элементов
+        const startButton = document.querySelector('.start-button');
+        const popup = document.querySelector('.popup');
+        const overlay = document.querySelector('.overlay');
+        const submitButton = document.querySelector('.submit-button');
+        const inputs = document.querySelectorAll('.input-container input');
+
+        // Функция для отображения попапа
+        function showPopup() {
+            popup.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        // Функция для скрытия попапа
+        function hidePopup() {
+            popup.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        // Обработчик нажатия на кнопку "Начать"
+        startButton.addEventListener('click', showPopup);
+
+        // Обработчик нажатия на кнопку "Отправить"
+        submitButton.addEventListener('click', () => {
+            hidePopup();
+            const data = Array.from(inputs).reduce((acc, input, index) => {
+                acc[`field${index + 1}`] = input.value;
+                return acc;
+            }, {});
+            console.log(data);
+            // Вывод данных на страницу
+            document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        });
+
+        // Закрытие попапа при клике вне его
+        overlay.addEventListener('click', hidePopup);
+    </script>
+</body>
+</html>
